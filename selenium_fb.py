@@ -13,6 +13,7 @@ THANK_YOU_MESSAGES = ["Thanks! :D",
                       "Thank you! :)"]
 
 driver = webdriver.Firefox()
+driver.maximize_window()
 driver.get('https://www.facebook.com')
 assert "Facebook" in driver.title
 elem = driver.find_element_by_id("email")
@@ -24,19 +25,21 @@ elem.send_keys(Keys.RETURN)
 elem = driver.find_element_by_xpath("//a[@title='Profile']")
 elem.click()
 
-for elem in driver.find_elements_by_css_selector("a[class^='UFILikeLink']"):
-    elem.click()
-
+# for elem in driver.find_elements_by_css_selector("a[class^='UFILikeLink']"):
+#     elem.click()
+time.sleep(5)
 comments = driver.find_elements_by_css_selector("div[class^='UFIAddCommentInput']")
 total = len(comments)
 
+
 for index in range(0, total):
 	driver.get("https://www.facebook.com/profile.php?id=100012234069444")
-	element = WebDriverWait(driver, 10).until(
-    	EC.presence_of_element_located((By.CLASS_NAME, "UFIAddCommentInput")))
+	driver.execute_script("window.scrollBy(0, "+str(200*index)+");")
 	comments = driver.find_elements_by_css_selector("div[class^='UFIAddCommentInput']")
-	print len(comments)
+	print comments
 	elem = comments[index]
+	print elem
+	# driver.execute_script("return arguments[0].scrollIntoView();", elem)
 	elem.click()
 	element = driver.find_element_by_class_name("_5rpu")
 	element.send_keys(random.choice(THANK_YOU_MESSAGES))
