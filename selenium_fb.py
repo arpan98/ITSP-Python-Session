@@ -24,8 +24,12 @@ elem.send_keys(Keys.RETURN)
 elem = driver.find_element_by_xpath("//a[@title='Profile']")
 elem.click()
 
+element = WebDriverWait(driver, 10).until(
+    	EC.presence_of_element_located((By.CLASS_NAME, "UFILikeLink")))
+
 for elem in driver.find_elements_by_css_selector("a[class^='UFILikeLink']"):
-    elem.click()
+	Actions actions = new Actions(driver)
+	actions.moveToElement(elem).click().perform()
 
 comments = driver.find_elements_by_css_selector("div[class^='UFIAddCommentInput']")
 total = len(comments)
@@ -41,3 +45,4 @@ for index in range(0, total):
 	element = driver.find_element_by_class_name("_5rpu")
 	element.send_keys(random.choice(THANK_YOU_MESSAGES))
 	element.send_keys(Keys.RETURN)
+	time.sleep(1)
